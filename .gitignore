@@ -1,0 +1,2 @@
+/backend/vote-server/*
+!/backend/vote-server/VoteServer
