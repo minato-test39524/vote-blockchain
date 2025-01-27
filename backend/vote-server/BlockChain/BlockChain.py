@@ -72,9 +72,10 @@ class BlockChain():
         for block in self.chain:
             candidate_id = block.get('data')['candidate_id']
 
-            if candidate_id in totalDict.keys():
-                totalDict[candidate_id] += 1
-            else:
-                totalDict.setdefault(candidate_id, 1)
+            if candidate_id is not None:    
+                if candidate_id in totalDict.keys():
+                    totalDict[candidate_id] += 1
+                else:
+                    totalDict.setdefault(candidate_id, 1)
 
         return totalDict

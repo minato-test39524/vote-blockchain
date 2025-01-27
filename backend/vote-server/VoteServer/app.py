@@ -171,8 +171,8 @@ def get_add_block_result():
 
 @app.get("/total")
 def get_total():
-    total_json = bc.get_total()
-    return total_json
+    total = bc.get_total()
+    return JSONResponse(content=total)
 
 @app.get("/blockchain")
 def get_blockchain_status():
