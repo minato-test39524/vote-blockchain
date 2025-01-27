@@ -85,7 +85,7 @@ def update_has_voted(
 
         db.commit()
 
-        return JSONResponse(content={"vote_result": "success"})
+        return JSONResponse(content={"result": "success"})
 
     except SQLAlchemyError as e:
 
