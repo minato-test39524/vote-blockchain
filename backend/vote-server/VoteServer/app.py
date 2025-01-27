@@ -73,6 +73,29 @@ def post_candidate(
 
     return {"message": "success"}
 
+@app.put("/voter/{id}")
+def update_has_voted(
+        id: int,
+        db: Session = Depends(get_db)
+    ):
+    try:
+        voter = db.query(VoterModel).filter(VoterModel.voter_id == id).first()
+
+        voter.has_voted = False
+
+        db.commit()
+
+        return JSONResponse(content={"vote_result": "success"})
+
+    except SQLAlchemyError as e:
+
+        db.rollback()
+        raise HTTPException(status_code=500, detail=str(e)) from e
+    
+    finally:
+        db.refresh(voter)
+
+
 @app.delete("/voter/{id}")
 def delete_voter(
         id: int,
@@ -122,7 +145,7 @@ def vote_to_candidate(
 
                 db.commit()
 
-                return {"vote_result": "success"}
+                return JSONResponse(content={"vote_result": "success"})
 
             except SQLAlchemyError as e:
 
@@ -132,9 +155,9 @@ def vote_to_candidate(
             finally:
                 db.refresh(voter)
         else:
-            return {"vote_result": "this voter has voted"}
+            return JSONResponse(content={"vote_result": "this voter has voted"})
     else:
-        return {"vote_result": "vote id doesn't exist"}
+        return JSONResponse(content={"vote_result": "vote id doesn't exist"})
     
 
 @app.get("/blockchain/result")
