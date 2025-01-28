@@ -1,6 +1,7 @@
 from sqlalchemy import  Boolean, Column, Integer, String
 from databases.settings import Base
 
+# 有権者モデル
 class VoterModel(Base):
     __tablename__ = 'voter'
 
@@ -8,6 +9,7 @@ class VoterModel(Base):
     voter_name = Column('voter_name', String(30))
     has_voted = Column('has_voted', Boolean, default=False)
 
+# 候補者モデル
 class CandidateModel(Base):
     __tablename__ = 'candidate'
 

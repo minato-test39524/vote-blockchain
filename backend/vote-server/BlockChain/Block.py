@@ -6,8 +6,8 @@ class Block:
             self, 
             index, 
             timestamp, 
-            previous_block_hash, 
-            data,
+            previous_block_hash, # 前のブロックのハッシュ値
+            data, # 投票データ
             hash=None
         ):
         self.index = index
@@ -16,6 +16,7 @@ class Block:
         self.data = data
         self.block_hash = hash or self.calculate_hash()
 
+    # ブロックのハッシュ値を計算
     def calculate_hash(self):
         block_string = json.dumps({
             'index': self.index,

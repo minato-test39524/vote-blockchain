@@ -5,8 +5,9 @@ from BlockChain.Block import Block
 class BlockChain():
     def __init__(self):
         self.chain = [self.create_genesis_block()]
-        self.pending_votes = Queue()
+        self.pending_votes = Queue() # ブロック生成前の投票データを格納するキュー
 
+    # ブロックチェーンにおける最初のブロック(ジェネシスブロック)を生成
     def create_genesis_block(self):
         genesis_block = Block(
             index=0,
@@ -21,9 +22,11 @@ class BlockChain():
         )
         return genesis_block.__dict__
     
+    # チェーンの最新のブロックを取得
     def get_latest_block(self):
         return self.chain[-1]
     
+    # 投票データを追加
     def add_vote(self, voter_id, candidate_id):
         vote_data = {
             'voter_id': voter_id,
@@ -33,6 +36,7 @@ class BlockChain():
         }
         self.pending_votes.put(vote_data)
 
+    # 投票データを検証してブロックを生成
     def create_block(self, vote_data):
         if self.verify_vote(vote_data):
             block = Block(
@@ -48,7 +52,7 @@ class BlockChain():
             return "=== Failed to verify vote === \r\n" + "=== Failed to add block === \r\n" + "=== Voting data has been discarded ==="
 
     
-    # vote_dataを検証
+    # 投票データを検証
     def verify_vote(self, vote_data):
         checks = [
             self.is_first_vote(vote_data)
@@ -67,7 +71,8 @@ class BlockChain():
 
         return count_has_voted == 0
     
-    def get_total(self):
+    # 候補者IDごとの得票数を集計
+    def get_num_of_votes(self):
         totalDict = {}
         for block in self.chain:
             candidate_id = block.get('data')['candidate_id']

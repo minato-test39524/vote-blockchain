@@ -39,18 +39,21 @@ def get_db():
     finally:
         db.close()
 
+# select * from voter;
 @app.get("/voter")
 def get_voter(
         db: Session = Depends(get_db)
     ):
     return db.query(VoterModel).all()
 
+# select * from voter;
 @app.get("/candidate", response_model=List[CandidateSchema])
 def get_candidate(
         db: Session = Depends(get_db)    
     ):
     return db.query(CandidateModel).all()
 
+# insert into values(VoterModel);
 @app.post("/voter")
 def post_voter(
         voter: PostVoter,
@@ -62,6 +65,7 @@ def post_voter(
 
     return {"message": "success"}
 
+# insert into values(CandidateModel);
 @app.post("/candidate")
 def post_candidate(
         candidate: PostCandidate,
@@ -73,6 +77,7 @@ def post_candidate(
 
     return {"message": "success"}
 
+# update voter set has_voted = False where voter_id = id;
 @app.put("/voter/{id}")
 def update_has_voted(
         id: int,
@@ -95,7 +100,7 @@ def update_has_voted(
     finally:
         db.refresh(voter)
 
-
+# delete from voter where voter_id = id;
 @app.delete("/voter/{id}")
 def delete_voter(
         id: int,
@@ -107,6 +112,7 @@ def delete_voter(
 
     return {"message": "success"}
 
+# delete from candidate where candidate_id = id;
 @app.delete("/candidate/{id}")
 def delete_candidate(
         id: int,
@@ -122,6 +128,7 @@ def delete_candidate(
 
 # 以下ブロックチェーン関連API
 
+# 有権者IDと候補者IDを受け取り、voterテーブルのhas_votedがFalseであればIDをもとに投票データを追加する
 @app.put("/vote/{voter_id}/{candidate_id}")
 def vote_to_candidate(
         voter_id: int,
@@ -160,7 +167,8 @@ def vote_to_candidate(
         return JSONResponse(content={"vote_result": "vote id doesn't exist"})
     
 
-@app.get("/blockchain/result")
+# pending_votesから投票データを取り出して作成されたブロックの内容を取得
+@app.get("/block")
 def get_add_block_result():
     result = bc.create_block(bc.pending_votes.get())
 
@@ -169,13 +177,15 @@ def get_add_block_result():
     else:
         return result
 
-@app.get("/total")
-def get_total():
-    total = bc.get_total()
+# 候補者IDごとの得票数を取得
+@app.get("/num-of-votes")
+def get_num_of_votes():
+    total = bc.get_num_of_votes()
     return JSONResponse(content=total)
 
+# ブロックチェーンの内容を取得
 @app.get("/blockchain")
-def get_blockchain_status():
+def get_blockchain():
     status = bc.chain
     return JSONResponse(content=status)
 
