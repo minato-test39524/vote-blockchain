@@ -13,7 +13,7 @@ export const Total = () => {
             setTotalData(res.data);
         })
         .catch(error => {
-            console.log(error)
+            console.log(error);
         });
     }
 
