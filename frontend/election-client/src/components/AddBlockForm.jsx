@@ -7,7 +7,7 @@ export const AddBlockForm = () => {
     const [ addResult, setAddResult ] = useState()
 
     const onClickAdd = () => {
-        axios.get(`http://localhost:8000/blockchain/result`)
+        axios.get(`http://localhost:8000/block`)
         .then(res => {
             console.log(JSON.stringify(res.data));
             setAddResult(JSON.stringify(res.data, null, 2));
