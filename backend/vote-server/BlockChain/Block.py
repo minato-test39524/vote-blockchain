@@ -14,7 +14,6 @@ class Block:
         self.timestamp = timestamp
         self.previous_block_hash = previous_block_hash
         self.data = data
-        self.nonce = 0
         self.block_hash = hash or self.calculate_hash()
 
     def calculate_hash(self):
@@ -23,7 +22,6 @@ class Block:
             'timestamp': self.timestamp,
             'previous_block_hash': self.previous_block_hash,
             'data': self.data,
-            'nonce': self.nonce,
         }, sort_keys=True).encode()
 
         return sha256(block_string).hexdigest()
