@@ -7,7 +7,7 @@ export const Total = () => {
     const [ totalData, setTotalData ] = useState([]);
 
     const onClickShowTotal = () => {
-        axios.get(`http://localhost:8000/num-of-block`)
+        axios.get(`http://localhost:8000/num-of-votes`)
         .then(res => {
             console.log(res.data);
             setTotalData(res.data);
